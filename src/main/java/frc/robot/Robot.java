@@ -7,6 +7,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID;
+
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,6 +26,17 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  
+  Joystick controller = new Joystick(0);
+
+  TalonFX m_leftMotor1 = new TalonFX(1);
+  TalonFX m_leftMotor2 = new TalonFX(2);
+  TalonFX m_rightMotor1 = new TalonFX(3);
+  TalonFX m_rightMotor2 = new TalonFX(4);
+
+  double baseSpeed = 0.5; //base power for motors. AKA fastest a motor can go at any given time
+  double mY = 0;          //RAW data from joystick Y axis
+  double mR = 0;          //RAW data from joystick Rotational Axis
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -81,7 +100,19 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    mY = controller.getRawAxis(1); //assumes that forward is positive and backwards is negative
+    mR = controller.getRawAxis(4); //assumes that rotating counter clockwise is negative and clockwise is positive
+
+    double lM = baseSpeed * (mY + mR);
+    double rM = baseSpeed * (mY - mR);
+
+    m_leftMotor1.set(TalonFXControlMode.PercentOutput, lM);
+    m_leftMotor2.set(TalonFXControlMode.PercentOutput, lM);
+    m_rightMotor1.set(TalonFXControlMode.PercentOutput, rM);
+    m_rightMotor2.set(TalonFXControlMode.PercentOutput, rM);
+
+  }
 
   @Override
   public void testInit() {
