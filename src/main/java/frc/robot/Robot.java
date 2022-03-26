@@ -33,11 +33,13 @@ public class Robot extends TimedRobot {
   TalonFX m_leftMotor2 = new TalonFX(2);
   TalonFX m_rightMotor1 = new TalonFX(3);
   TalonFX m_rightMotor2 = new TalonFX(4);
+  TalonFX m_winch = new TalonFX(6);
 
-  double baseSpeed = 0.5; //base power for motors. AKA fastest a motor can go at any given time
+  double baseSpeed = 0.25; //base power for motors. AKA fastest a motor can go at any given time
   double mY = 0;          //RAW data from joystick Y axis
   double mR = 0;          //RAW data from joystick Rotational Axis
-
+  double winchSpeed = 0.35; //base power for motors. AKA fastest a motor can go at any given time
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -104,13 +106,19 @@ public class Robot extends TimedRobot {
     mY = controller.getRawAxis(1); //assumes that forward is positive and backwards is negative
     mR = controller.getRawAxis(4); //assumes that rotating counter clockwise is negative and clockwise is positive
 
+    boolean b7 = controller.getRawButton(7);  //up
+    boolean b9 = controller.getRawButton(9);  //down
+
+    double wM = winchSpeed * ((b7 ? 1 : 0) + (b9 ? -1 : 0));
+
     double lM = baseSpeed * (mY + mR);
-    double rM = baseSpeed * (mY - mR);
+    double rM = baseSpeed * (mY - mR) * -1;
 
     m_leftMotor1.set(TalonFXControlMode.PercentOutput, lM);
     m_leftMotor2.set(TalonFXControlMode.PercentOutput, lM);
     m_rightMotor1.set(TalonFXControlMode.PercentOutput, rM);
     m_rightMotor2.set(TalonFXControlMode.PercentOutput, rM);
+    m_winch.set(TalonFXControlMode.PercentOutput, wM);
 
   }
 
