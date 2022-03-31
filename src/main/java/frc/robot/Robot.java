@@ -11,10 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.DriverStation;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,11 +25,14 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
  * project.
  */
 public class Robot extends TimedRobot {
+  String gameData;
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
   
   Joystick controller = new Joystick(0);
+
+  Spark blinkin = new Spark(0);
 
   TalonFX m_leftMotor1 = new TalonFX(1);
   TalonFX m_leftMotor2 = new TalonFX(2);
@@ -97,7 +102,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    
+  }
 
   @Override
   public void teleopInit() {
@@ -113,6 +120,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    gameData = DriverStation.getGameSpecificMessage();
     mY = controller.getRawAxis(1); //assumes that forward is positive and backwards is negative
     mR = controller.getRawAxis(4); //assumes that rotating counter clockwise is negative and clockwise is positive
 
@@ -142,8 +150,8 @@ public class Robot extends TimedRobot {
     b9previous = b9;
 
     double tM = tailSpeed * ((b3 ? -1 : 0) + (b5 ? 1 : 0));
-    double lM = baseSpeed * (mY + mR);
-    double rM = baseSpeed * (mY - mR) * -1;
+    double lM = baseSpeed * (-mY + mR);
+    double rM = baseSpeed * (-mY - mR) * -1;
 
 
 
