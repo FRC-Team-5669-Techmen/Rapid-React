@@ -126,9 +126,10 @@ public class Robot extends TimedRobot {
 
     boolean b7 = controller.getRawButton(7);  //up
     boolean b9 = controller.getRawButton(9);  //down
-    boolean b3 = controller.getRawButton(3);  //up
-    boolean b5 = controller.getRawButton(5);  //down
+    boolean b11 = controller.getRawButton(11);  //up
+    boolean b13 = controller.getRawButton(13);  //down
 
+    /*
     if(b7previous != b7) {  //b7 input changed
       if(winchDebounced == false) {
         winchDebounced = true;
@@ -147,9 +148,10 @@ public class Robot extends TimedRobot {
     }
 
     b7previous = b7;
-    b9previous = b9;
+    b9previous = b9;*/
 
-    double tM = tailSpeed * ((b3 ? -1 : 0) + (b5 ? 1 : 0));
+    double tM = tailSpeed * ((b11 ? -1 : 0) + (b13 ? 1 : 0));
+    wM = winchSpeed * ((b7 ? -1 : 0) + (b9 ? 1 : 0));
     double lM = baseSpeed * (-mY + mR);
     double rM = baseSpeed * (-mY - mR) * -1;
 
