@@ -41,6 +41,14 @@ public class Robot extends TimedRobot {
   double mR = 0;          //RAW data from joystick Rotational Axis
   double winchSpeed = 0.35; //base power for winch. AKA fastest the winch can go at any given time
   double tailSpeed = 0.35; //base power for tail. AKA fastest the tail can go at any given time
+
+  boolean winchDebounced = false; //if false, let winch input register, if true dont let input register
+  double interval = 0; //counts up to set limit, and when reach that set limit allow winchdebounced to become false again
+  double limit = 3000; //limit for interval
+  double wM = 0;
+
+  boolean b7previous = false;
+  boolean b9previous = true;
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -113,11 +121,31 @@ public class Robot extends TimedRobot {
     boolean b3 = controller.getRawButton(3);  //up
     boolean b5 = controller.getRawButton(5);  //down
 
-    double wM = winchSpeed * ((b7 ? -1 : 0) + (b9 ? 1 : 0));
-    double tM = tailSpeed * ((b3 ? -1 : 0) + (b5 ? 1 : 0));
+    if(b7previous != b7) {  //b7 input changed
+      if(winchDebounced == false) {
+        winchDebounced = true;
+        wM = winchSpeed * 1;
+      }else if(b7 == false) {
+        wM = 0;
+      }
+    }
+    if(b9previous != b9) {  //b9 input changed
+      if(winchDebounced == false) {
+        winchDebounced = true;
+        wM = winchSpeed * -1;
+      }else if(b9 == false) {
+        wM = 0;
+      }
+    }
 
+    b7previous = b7;
+    b9previous = b9;
+
+    double tM = tailSpeed * ((b3 ? -1 : 0) + (b5 ? 1 : 0));
     double lM = baseSpeed * (mY + mR);
     double rM = baseSpeed * (mY - mR) * -1;
+
+
 
     m_leftMotor1.set(TalonFXControlMode.PercentOutput, lM);
     m_leftMotor2.set(TalonFXControlMode.PercentOutput, lM);
@@ -125,6 +153,14 @@ public class Robot extends TimedRobot {
     m_rightMotor2.set(TalonFXControlMode.PercentOutput, rM);
     m_winch.set(TalonFXControlMode.PercentOutput, wM);
     m_tail.set(TalonFXControlMode.PercentOutput, tM);
+
+
+
+    interval += 1;
+    if (interval > limit) {
+      interval = 0;
+      winchDebounced = false;
+    }
 
   }
 
