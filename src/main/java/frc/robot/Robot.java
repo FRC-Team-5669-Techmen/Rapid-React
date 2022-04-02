@@ -37,8 +37,10 @@ public class Robot extends TimedRobot {
   TalonFX m_leftMotor2 = new TalonFX(2);
   TalonFX m_rightMotor1 = new TalonFX(3);
   TalonFX m_rightMotor2 = new TalonFX(4);
-  TalonFX m_tail = new TalonFX(5);
-  TalonFX m_winch = new TalonFX(6);
+  TalonFX m_tail1 = new TalonFX(5);
+  TalonFX m_tail2 = new TalonFX(7);  
+  TalonFX m_winch1 = new TalonFX(6);
+  TalonFX m_winch2 = new TalonFX(8);
 
   double baseSpeed = 0.25; // base power for motors. AKA fastest a motor can go at any given time
   double mY = 0; // RAW data from joystick Y axis
@@ -216,8 +218,12 @@ public class Robot extends TimedRobot {
     m_leftMotor2.set(TalonFXControlMode.PercentOutput, lM);
     m_rightMotor1.set(TalonFXControlMode.PercentOutput, rM);
     m_rightMotor2.set(TalonFXControlMode.PercentOutput, rM);
-    m_winch.set(TalonFXControlMode.PercentOutput, wM);
-    m_tail.set(TalonFXControlMode.PercentOutput, tM);
+
+    m_winch1.set(TalonFXControlMode.PercentOutput, wM);
+    m_winch2.set(TalonFXControlMode.PercentOutput, wM);
+
+    m_tail1.set(TalonFXControlMode.PercentOutput, tM);
+    m_tail2.set(TalonFXControlMode.PercentOutput, tM);
 
     interval += 1;
     if (interval > limit) {
