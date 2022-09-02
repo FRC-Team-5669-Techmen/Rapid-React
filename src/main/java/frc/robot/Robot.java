@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  Joystick controller = new Joystick(0);
+  Joystick controller = new Joystick(4);
 
   Spark blinkin = new Spark(0);
 
@@ -170,7 +170,7 @@ public class Robot extends TimedRobot {
       blinkin.set(0.53);
     }
     mY = controller.getRawAxis(1); // assumes that forward is positive and backwards is negative
-    mR = controller.getRawAxis(4); // assumes that rotating counter clockwise is negative and clockwise is positive
+    mR = controller.getRawAxis(0); // assumes that rotating counter clockwise is negative and clockwise is positive
 
     boolean b7 = controller.getRawButton(7); // up
     boolean b9 = controller.getRawButton(9); // down
@@ -219,11 +219,11 @@ public class Robot extends TimedRobot {
     m_rightMotor1.set(TalonFXControlMode.PercentOutput, rM);
     m_rightMotor2.set(TalonFXControlMode.PercentOutput, rM);
 
-    m_winch1.set(TalonFXControlMode.PercentOutput, wM);
-    m_winch2.set(TalonFXControlMode.PercentOutput, wM);
+    //m_winch1.set(TalonFXControlMode.PercentOutput, wM);
+    //m_winch2.set(TalonFXControlMode.PercentOutput, wM);
 
-    m_tail1.set(TalonFXControlMode.PercentOutput, tM);
-    m_tail2.set(TalonFXControlMode.PercentOutput, tM);
+   // m_tail1.set(TalonFXControlMode.PercentOutput, tM);
+   // m_tail2.set(TalonFXControlMode.PercentOutput, tM);
 
     interval += 1;
     if (interval > limit) {
