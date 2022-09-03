@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
   TalonFX m_rightMotor1 = new TalonFX(3);
   TalonFX m_rightMotor2 = new TalonFX(4);
   TalonFX m_tail1 = new TalonFX(5);
-  TalonFX m_tail2 = new TalonFX(7);  
+  TalonFX m_tail2 = new TalonFX(7);
   TalonFX m_winch1 = new TalonFX(6);
   TalonFX m_winch2 = new TalonFX(8);
 
@@ -176,12 +176,13 @@ public class Robot extends TimedRobot {
     boolean b9 = controller.getRawButton(9); // down
     boolean b11 = controller.getRawButton(11); // up
     boolean b13 = controller.getRawButton(13); // down
-    boolean b1 = controller.getRawButton(1);
-
-    if (b1 == true) {
-      constantEnabled = true;
-    }
-
+    boolean b1 = controller.getRawButton(1);/*
+                                             * 
+                                             * 
+                                             * if (b1 == true) {
+                                             * constantEnabled = true;
+                                             * }
+                                             */
     /*
      * if(b7previous != b7) { //b7 input changed
      * if(winchDebounced == false) {
@@ -203,14 +204,14 @@ public class Robot extends TimedRobot {
      * b7previous = b7;
      * b9previous = b9;
      */
-
-    double tM = tailSpeed * ((b11 ? -1 : 0) + (b13 ? 1 : 0));
-    wM = winchSpeed * ((b7 ? -1 : 0) + (b9 ? 1 : 0));
-
-    if (constantEnabled) {
-      wM = constantPower;
-    }
-
+    /*
+     * double tM = tailSpeed * ((b11 ? -1 : 0) + (b13 ? 1 : 0));
+     * wM = winchSpeed * ((b7 ? -1 : 0) + (b9 ? 1 : 0));
+     * 
+     * if (constantEnabled) {
+     * wM = constantPower;
+     * }
+     */
     double lM = baseSpeed * (-mY + mR);
     double rM = baseSpeed * (-mY - mR) * -1;
 
@@ -219,11 +220,11 @@ public class Robot extends TimedRobot {
     m_rightMotor1.set(TalonFXControlMode.PercentOutput, rM);
     m_rightMotor2.set(TalonFXControlMode.PercentOutput, rM);
 
-    //m_winch1.set(TalonFXControlMode.PercentOutput, wM);
-    //m_winch2.set(TalonFXControlMode.PercentOutput, wM);
+    // m_winch1.set(TalonFXControlMode.PercentOutput, wM);
+    // m_winch2.set(TalonFXControlMode.PercentOutput, wM);
 
-   // m_tail1.set(TalonFXControlMode.PercentOutput, tM);
-   // m_tail2.set(TalonFXControlMode.PercentOutput, tM);
+    // m_tail1.set(TalonFXControlMode.PercentOutput, tM);
+    // m_tail2.set(TalonFXControlMode.PercentOutput, tM);
 
     interval += 1;
     if (interval > limit) {
