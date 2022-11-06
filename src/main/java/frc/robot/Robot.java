@@ -157,61 +157,30 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     constantEnabled = false;
+    blinkin.set(-.99);
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
-      blinkin.set(-.95);
-    } else if (DriverStation.getAlliance() == DriverStation.Alliance.Red) {
-      blinkin.set(-.93);
-    } else {
-      blinkin.set(0.53);
-    }
+  public void teleopPeriodic() {/*
+                                 * * if (DriverStation.getAlliance() ==
+                                 * 
+                                 * * } else if (DriverStation.getAlliance() =
+                                 * 
+                                 * 
+                                 * 
+                                 * }
+                                 */
     mY = controller.getRawAxis(1); // assumes that forward is positive and backwards is negative
     mR = controller.getRawAxis(0); // assumes that rotating counter clockwise is negative and clockwise is positive
+    mY = (controller.getRawAxis(2)) - (controller.getRawAxis(3));
 
-    boolean b7 = controller.getRawButton(7); // up
-    boolean b9 = controller.getRawButton(9); // down
-    boolean b11 = controller.getRawButton(11); // up
-    boolean b13 = controller.getRawButton(13); // down
-    boolean b1 = controller.getRawButton(1);/*
-                                             * 
-                                             * 
-                                             * if (b1 == true) {
-                                             * constantEnabled = true;
-                                             * }
-                                             */
-    /*
-     * if(b7previous != b7) { //b7 input changed
-     * if(winchDebounced == false) {
-     * winchDebounced = true;
-     * wM = winchSpeed * 1;
-     * }else if(b7 == false) {
-     * wM = 0;
-     * }
-     * }
-     * if(b9previous != b9) { //b9 input changed
-     * if(winchDebounced == false) {
-     * winchDebounced = true;
-     * wM = winchSpeed * -1;
-     * }else if(b9 == false) {
-     * wM = 0;
-     * }
-     * }
-     * 
-     * b7previous = b7;
-     * b9previous = b9;
-     */
-    /*
-     * double tM = tailSpeed * ((b11 ? -1 : 0) + (b13 ? 1 : 0));
-     * wM = winchSpeed * ((b7 ? -1 : 0) + (b9 ? 1 : 0));
-     * 
-     * if (constantEnabled) {
-     * wM = constantPower;
-     * }
-     */
+    boolean b2 = controller.getRawButton(2); // up
+    boolean b3 = controller.getRawButton(3); // up
+
+    // double tM = tailSpeed * ((b11 ? -1 : 0) + (b13 ? 1 : 0));
+    wM = winchSpeed * ((b2 ? -1 : 0) + (b3 ? 1 : 0));
+
     double lM = baseSpeed * (-mY + mR);
     double rM = baseSpeed * (-mY - mR) * -1;
 
@@ -241,6 +210,7 @@ public class Robot extends TimedRobot {
   }
 
   /** This function is called periodically during test mode. */
+
   @Override
   public void testPeriodic() {
   }
